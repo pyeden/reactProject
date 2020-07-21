@@ -66,3 +66,27 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+### 目录说明
+
+- public  不会参与打包的静态文件夹
+
+- src 写代码的地方
+
+
+### 组件传值
+
+- 父组件-->子组件
+
+    - props
+
+- 子组件-->父组件
+    - this.props.func.bind(this, param1, param2)   func在父组件调用的子组件标签上进行调用 func={this.getchildValue}, getChildValue函数在父组件中定义
+
+- 同级组件传值
+    - pubsub-js包
+
+
+
+
