@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Button } from 'antd';
 import './App.scss';
 import Home from './views/Home';
 import Info from './views/info';
@@ -23,7 +24,8 @@ class App extends Component {
           <li>sss</li>
           <li>sss</li>
           <li>sss</li>
-          </div>
+        </div>
+        <Button type="primary">Primary Button</Button>
         <BrowserRouter>
           <Switch>
             <Route component={Home} exact path='/home' />
