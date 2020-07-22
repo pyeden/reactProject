@@ -20,6 +20,9 @@ class App extends Component {
       <>
         <div className="test">
           <h1>haha</h1>
+          <li>sss</li>
+          <li>sss</li>
+          <li>sss</li>
           </div>
         <BrowserRouter>
           <Switch>
