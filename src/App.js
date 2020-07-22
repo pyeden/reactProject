@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import Home from './views/Home';
 import Info from './views/info';
 
@@ -17,12 +17,17 @@ class App extends Component {
   render() {
 
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route component={Home} exact path='/home' />
-          <Route component={Info} exact path='/info' />
-        </Switch>
-      </BrowserRouter>
+      <>
+        <div className="test">
+          <h1>haha</h1>
+          </div>
+        <BrowserRouter>
+          <Switch>
+            <Route component={Home} exact path='/home' />
+            <Route component={Info} exact path='/info' />
+          </Switch>
+        </BrowserRouter>
+      </>
     )
   }
 
