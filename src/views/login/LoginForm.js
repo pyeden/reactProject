@@ -35,7 +35,12 @@ class LoginForm extends Component {
                 onFinish={() => this.onFinish}
                 >
 
-                    <Form.Item name="username" rules={[{ required: true, message: '请输入用户名!' }]}>
+                    <Form.Item name="username" rules={
+                        [
+                            { required: true, message: '请输入用户名!' },
+                            { type: "email", message: "用户名是邮箱"}
+                        ]
+                    }>
                     <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
                     </Form.Item>
 
@@ -43,10 +48,10 @@ class LoginForm extends Component {
                     <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入密码"/>
                     </Form.Item>
 
-                    <Form.Item name="password" rules={[{ required: true, message: '请输入验证码!' }]}>
+                    <Form.Item name="phonecode" rules={[{ required: true, message: '请输入验证码!' }]}>
                     <Row gutter={13}>
                         <Col span={15}>
-                        <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入验证码"/>
+                        <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="请输入验证码"/>
                         </Col>
                         <Col span={9}>
                         <Button type="primary" htmlType="submit" danger>

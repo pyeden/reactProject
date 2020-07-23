@@ -43,14 +43,26 @@ class RegisterForm extends Component {
                     <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入密码"/>
                     </Form.Item>
 
-                    <Form.Item name="password" rules={[{ required: true, message: '请输入确认密码!' }]}>
+                    <Form.Item name="password2" rules={
+                        [
+                            { required: true, message: '请输入确认密码!' },
+                            ({getFieldValue}) => ({        //es6解构获取到getFieldValue属性对象
+                                validator(rule, value) {   //value是当前标签的值
+                                    if(!value || getFieldValue("password") === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject("两次密码不匹配")
+                                }
+                            })
+                        ]
+                    }>
                     <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入确认密码"/>
                     </Form.Item>
 
-                    <Form.Item name="password" rules={[{ required: true, message: '请输入验证码!' }]}>
+                    <Form.Item name="phonecode" rules={[{ required: true, message: '请输入验证码!' }]}>
                     <Row gutter={13}>
                         <Col span={15}>
-                        <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入验证码"/>
+                        <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="请输入验证码"/>
                         </Col>
                         <Col span={9}>
                         <Button type="primary" htmlType="submit" danger>
