@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 import "./index.scss"
 
 
@@ -8,22 +9,25 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      formType: "login"
 
     };
   }
-
+  switchForm = (v) => {
+    this.setState({
+      formType:v
+    })
+  }
   render() {
 
     return (
       <div className="form-wrap">
         <div>
-          <div className="form-header">
-            <h4 className="column">登 录</h4>
-            <span>注 册</span>
-          </div>
-          <div className="form-body">
-            <LoginForm></LoginForm>
-          </div>
+          {
+            this.state.formType==='login'
+            ? <LoginForm switchForm={this.switchForm}></LoginForm>
+            : <RegisterForm switchForm={this.switchForm}></RegisterForm>
+          }
         </div>
       </div>
     )
