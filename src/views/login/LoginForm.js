@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Row, Col } from 'antd';
+// import { validate_password } from '../../utils/validate'
 import "./index.scss";
  
 
@@ -44,7 +45,12 @@ class LoginForm extends Component {
                     <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
                     </Form.Item>
 
-                    <Form.Item name="password" rules={[{ required: true, message: '请输入密码!' }]}>
+                    <Form.Item name="password" rules={
+                        [
+                            { required: true, message: '请输入密码!' },
+                            { min: 6, message: '最少6位'}
+                        ]
+                    }>
                     <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入密码"/>
                     </Form.Item>
 

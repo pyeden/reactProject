@@ -46,7 +46,7 @@ class RegisterForm extends Component {
                     <Form.Item name="password2" rules={
                         [
                             { required: true, message: '请输入确认密码!' },
-                            ({getFieldValue}) => ({        //es6解构获取到getFieldValue属性对象
+                            ({getFieldValue}) => ({        //es6解构获取到getFieldValue属性对象,获取多个值使用逗号隔开
                                 validator(rule, value) {   //value是当前标签的值
                                     if(!value || getFieldValue("password") === value) {
                                         return Promise.resolve();
