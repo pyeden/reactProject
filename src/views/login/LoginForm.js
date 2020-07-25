@@ -4,7 +4,8 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Row, Col } from 'antd';
 // import { validate_password } from '../../utils/validate'
 import "./index.scss";
- 
+//api
+import { Login } from './api/account'
 
 class LoginForm extends Component {
 
@@ -16,8 +17,16 @@ class LoginForm extends Component {
     }
 
     
-    onFinish = (values) => {
-      console.log('Received values of form: ', values);
+    onFinish = (v) => {
+        console.log(v)
+        Login().then(response => {
+            if (response.status === 200) {
+                console.log(response)
+
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     };
   
     render() {
@@ -33,7 +42,7 @@ class LoginForm extends Component {
                 name="normal_login"
                 className="login-form"
                 initialValues={{ remember: true }}
-                onFinish={() => this.onFinish}
+                onFinish={this.onFinish}          //点击提交触发
                 >
 
                     <Form.Item name="username" rules={
