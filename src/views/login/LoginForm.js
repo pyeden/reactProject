@@ -6,6 +6,7 @@ import { Row, Col } from 'antd';
 import "./index.scss";
 //api
 import { Login } from './api/account'
+import { GetCode } from './api/account'
 
 class LoginForm extends Component {
 
@@ -28,7 +29,17 @@ class LoginForm extends Component {
             console.log(error)
         })
     };
-  
+    
+    getCode = () => {
+        GetCode().then(response => {
+            if(response.status === 200) {
+                console.log(response)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     render() {
   
       return (
@@ -69,7 +80,7 @@ class LoginForm extends Component {
                         <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="请输入验证码"/>
                         </Col>
                         <Col span={9}>
-                        <Button type="primary" htmlType="submit" danger>
+                        <Button type="primary" onClick={this.getCode}  danger block>    {/*htmlType="submit"会自动触发onFinish表单提交方法 */}
                             获取验证码
                         </Button>
                         </Col>

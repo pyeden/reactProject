@@ -9,3 +9,11 @@ export function Login(data) {
 
     })
 }
+
+/* 验证码接口 */
+export function GetCode() {
+    return service.request({
+        url: "/user/code",
+        method: "get"
+    })
+} 
