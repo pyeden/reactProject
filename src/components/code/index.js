@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, message } from 'antd';
 import { GetCode } from '../../views/login/api/account'
 
+let timer=null
+
 class Code extends Component {
 
     constructor(props) {
@@ -24,7 +26,7 @@ class Code extends Component {
         })
         // setInterval  clearInterval  不间断定时器
         // setTimeout  clearTimeout   只执行一次
-        let timer = setInterval(() => {
+        timer = setInterval(() => {
             sed--
             if(sed<=0){
                 clearInterval(timer)
@@ -46,6 +48,14 @@ class Code extends Component {
             username:value.username,
             code_button_disable:value.code_button_disable
         })
+    }
+
+    //组件销毁触发
+    componentWillUnmount() {
+        console.log(11111)
+        //切换组件时，销毁之前的定时器
+        clearInterval(timer)
+        
     }
     //点击获取验证码
     getCode = () => {
