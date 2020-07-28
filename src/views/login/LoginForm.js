@@ -88,6 +88,8 @@ class LoginForm extends Component {
                             ({getFieldValue}) => ({
                                 validator(rule, value) {
                                     if (value) {
+                                        //此处使用this，this指向为验证函数对象 RuleObject
+                                        console.log(this)
                                         _this.setState({
                                             code_button_disable: false
                                         })
