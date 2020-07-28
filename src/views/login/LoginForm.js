@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Row, Col } from 'antd';
+import { Row, Col, message } from 'antd';
 // import { validate_password } from '../../utils/validate'
 import "./index.scss";
 //api
@@ -13,7 +13,8 @@ class LoginForm extends Component {
     constructor(props) {
       super(props)
       this.state = {
-          username: ""
+          username: "",
+          code_button_disable: true
   
       };
     }
@@ -42,6 +43,10 @@ class LoginForm extends Component {
     
     //点击获取验证码
     getCode = () => {
+        if(!this.state.username) {
+            message.warning("用户名不能为空", 1)
+            return false
+        }
 
         const requestData = {
             username:this.state.username,
@@ -59,7 +64,9 @@ class LoginForm extends Component {
 
     render() {
       
-      const {username} = this.state
+      const {username, code_button_disable} = this.state
+      //使用变量来存储this指向
+      const _this = this
       return (
         <Fragment>
             <div className="form-header">
@@ -77,7 +84,21 @@ class LoginForm extends Component {
                     <Form.Item name="username" rules={
                         [
                             { required: true, message: '请输入用户名!' },
-                            { type: "email", message: "用户名是邮箱"}
+                            { type: "email", message: "用户名是邮箱"},
+                            ({getFieldValue}) => ({
+                                validator(rule, value) {
+                                    if (value) {
+                                        _this.setState({
+                                            code_button_disable: false
+                                        })
+                                        return Promise.resolve()
+                                    }
+                                    _this.setState({
+                                        code_button_disable: true
+                                    })
+                                    return Promise.reject("账户不能为空")
+                                }
+                            })
                         ]
                     }>
                     <Input value={username} onChange={this.inputChange} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
@@ -86,7 +107,8 @@ class LoginForm extends Component {
                     <Form.Item name="password" rules={
                         [
                             { required: true, message: '请输入密码!' },
-                            { min: 6, message: '最少6位'}
+                            { min: 6, message: '最少6位'},
+
                         ]
                     }>
                     <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入密码"/>
@@ -98,7 +120,7 @@ class LoginForm extends Component {
                         <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="请输入验证码"/>
                         </Col>
                         <Col span={9}>
-                        <Button type="primary" onClick={this.getCode}  danger block>    {/*htmlType="submit"会自动触发onFinish表单提交方法 */}
+                        <Button type="primary" disabled={code_button_disable} onClick={this.getCode}  danger block>    {/*htmlType="submit"会自动触发onFinish表单提交方法 */}
                             获取验证码
                         </Button>
                         </Col>
