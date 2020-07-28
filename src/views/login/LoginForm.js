@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Row, Col, message } from 'antd';
+// import { PoweroffOutlined } from '@ant-design/icons';
 // import { validate_password } from '../../utils/validate'
 import "./index.scss";
 //api
@@ -14,7 +15,9 @@ class LoginForm extends Component {
       super(props)
       this.state = {
           username: "",
-          code_button_disable: true
+          code_text:"获取验证码",
+          code_button_disable: true,
+          code_button_loding: false
   
       };
     }
@@ -40,14 +43,42 @@ class LoginForm extends Component {
             username: inputValue
         })
     }
-    
+    //到计时函数
+    countDown = () => {
+        let sed = 60
+        this.setState({
+            code_button_loding:false,
+            code_button_disable:true,
+            code_text: `${sed}s`,
+        })
+        // setInterval  clearInterval  不间断定时器
+        // setTimeout  clearTimeout   只执行一次
+        let timer = setInterval(() => {
+            sed--
+            if(sed<=0){
+                clearInterval(timer)
+                this.setState({
+                    code_text:"重新发送",
+                    code_button_disable:false
+                })
+                return false
+            }
+            this.setState({
+                code_text:`${sed}s`
+            })
+        }, 1000);                         //1000=1秒
+
+    }
     //点击获取验证码
     getCode = () => {
         if(!this.state.username) {
             message.warning("用户名不能为空", 1)
             return false
         }
-
+        this.setState({
+            code_button_loding: true,
+            code_text:"发送中"
+        })
         const requestData = {
             username:this.state.username,
             module:"login"
@@ -56,15 +87,28 @@ class LoginForm extends Component {
         GetCode(requestData).then(response => {
             if(response.status === 200) {
                 console.log(response)
+                this.setState({
+                    code_text:"发送成功",
+                    code_button_loding: false,
+                    code_button_disable: true
+                })
             }
+            //执行倒计时
+            this.countDown()
         }).catch(error => {
+            message.error("发送失败", 2)
+            this.setState({
+                code_text:"重新发送",
+                code_button_loding: false,
+                code_button_disable: false,
+            })
             console.log(error)
         })
     }
 
     render() {
       
-      const {username, code_button_disable} = this.state
+      const {username, code_button_disable, code_button_loding, code_text} = this.state
       //使用变量来存储this指向
       const _this = this
       return (
@@ -103,36 +147,58 @@ class LoginForm extends Component {
                             })
                         ]
                     }>
-                    <Input value={username} onChange={this.inputChange} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
+                    <Input 
+                    value={username} 
+                    onChange={this.inputChange} 
+                    prefix={<UserOutlined className="site-form-item-icon" />} 
+                    placeholder="请输入用户名" />
                     </Form.Item>
 
-                    <Form.Item name="password" rules={
-                        [
+                    <Form.Item 
+                    name="password" 
+                    rules={[
                             { required: true, message: '请输入密码!' },
                             { min: 6, message: '最少6位'},
-
-                        ]
-                    }>
-                    <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="请输入密码"/>
+                    ]}>
+                        <Input 
+                        prefix={<LockOutlined 
+                        className="site-form-item-icon" />} 
+                        type="password" 
+                        placeholder="请输入密码"/>
                     </Form.Item>
 
-                    <Form.Item name="phonecode" rules={[{ required: true, message: '请输入验证码!' }]}>
-                    <Row gutter={13}>
-                        <Col span={15}>
-                        <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="请输入验证码"/>
-                        </Col>
-                        <Col span={9}>
-                        <Button type="primary" disabled={code_button_disable} onClick={this.getCode}  danger block>    {/*htmlType="submit"会自动触发onFinish表单提交方法 */}
-                            获取验证码
-                        </Button>
-                        </Col>
-                    </Row>
+                    <Form.Item 
+                    name="phonecode" 
+                    rules={[{ required: true, message: '请输入验证码!' }]}>
+                        <Row gutter={13}>
+                            <Col span={15}>
+                                <Input 
+                                prefix={<LockOutlined className="site-form-item-icon" />} 
+                                placeholder="请输入验证码"/>
+                            </Col>
+                            <Col span={9}>
+                                <Button 
+                                type="primary" 
+                                // icon={<PoweroffOutlined/>}
+                                loading={code_button_loding} 
+                                disabled={code_button_disable} 
+                                onClick={this.getCode}  
+                                danger 
+                                block>    {/*htmlType="submit"会自动触发onFinish表单提交方法 */}
+                                    {code_text}
+                                </Button>
+                            </Col>
+                        </Row>
                     </Form.Item>
 
                     <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button" block>
-                        登 录
-                    </Button>
+                        <Button 
+                        type="primary" 
+                        htmlType="submit" 
+                        className="login-form-button" 
+                        block>
+                            登 录
+                        </Button>
                     </Form.Item>
                 </Form>
             </div>
