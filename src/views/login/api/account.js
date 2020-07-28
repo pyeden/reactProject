@@ -10,6 +10,17 @@ export function Login(data) {
     })
 }
 
+
+/* 注册接口 */
+export function Register(data) {
+    return service.request({
+        url: "/user/register",
+        method: "POST",
+        data:data  
+
+    })
+}
+
 /* 验证码接口 */
 export function GetCode(data) {
     return service.request({
