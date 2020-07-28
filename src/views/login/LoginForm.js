@@ -13,14 +13,15 @@ class LoginForm extends Component {
     constructor(props) {
       super(props)
       this.state = {
+          username: ""
   
       };
     }
 
-    
+    //点击登录
     onFinish = (v) => {
         console.log(v)
-        Login().then(response => {
+        Login(v).then(response => {
             if (response.status === 200) {
                 console.log(response)
 
@@ -29,9 +30,25 @@ class LoginForm extends Component {
             console.log(error)
         })
     };
+
+    //输入值处理
+    inputChange = (e) => {
+        console.log(e.target.value)
+        let inputValue = e.target.value
+        this.setState({
+            username: inputValue
+        })
+    }
     
+    //点击获取验证码
     getCode = () => {
-        GetCode().then(response => {
+
+        const requestData = {
+            username:this.state.username,
+            module:"login"
+        }
+
+        GetCode(requestData).then(response => {
             if(response.status === 200) {
                 console.log(response)
             }
@@ -41,7 +58,8 @@ class LoginForm extends Component {
     }
 
     render() {
-  
+      
+      const {username} = this.state
       return (
         <Fragment>
             <div className="form-header">
@@ -62,7 +80,7 @@ class LoginForm extends Component {
                             { type: "email", message: "用户名是邮箱"}
                         ]
                     }>
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
+                    <Input value={username} onChange={this.inputChange} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
                     </Form.Item>
 
                     <Form.Item name="password" rules={

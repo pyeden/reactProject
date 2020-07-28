@@ -4,16 +4,17 @@ import service from '../../../utils/request';
 export function Login(data) {
     return service.request({
         url: "/user/login",
-        method: "get",
-        params: data  //get请求params:data， post请求data:data
+        method: "POST",
+        data:data  //get请求params:data， post请求data:data
 
     })
 }
 
 /* 验证码接口 */
-export function GetCode() {
+export function GetCode(data) {
     return service.request({
         url: "/user/code",
-        method: "get"
+        method: "POST",
+        data: data
     })
 } 
